@@ -1,6 +1,10 @@
 # Android Mithril Firmware Scanner
 
-Scripts de compilación cruzada para construir **Mithril** (escáner estático de firmware) y su dependencia **libarchive** directamente en Android mediante Termux, con aislamiento total de paquete, alineación de páginas de 16 KB y RPATH exclusivo.
+<p align="center">
+  <img src="logo.png" width="160" alt="Mithril Firmware Scanner Logo">
+</p>
+
+Scripts de compilación cruzada y aplicación Android para **Mithril** (escáner estático forense de firmware: secretos, SBOM, CVEs y licencias) y su dependencia **libarchive** con interfaz táctil y consola de terminal integrada.
 
 ## Descripción
 

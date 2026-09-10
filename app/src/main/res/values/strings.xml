@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mithril Firmware Scanner</string>
+    <string name="menu_set_working_dir">Select Working Directory</string>
+    <string name="menu_import_file">Import File to Workspace</string>
+    <string name="menu_export_downloads">Export Files to Downloads</string>
+    <string name="menu_copy_logs">Copy Logs to Clipboard</string>
+    <string name="menu_clear_terminal">Clear Terminal</string>
+    <string name="str_polticas_de_pri">Privacy Policy</string>
+    <string name="str_acerca_de">About and Licenses</string>
+    <string name="str_terminal_salida">Terminal Console</string>
+    <string name="str_detener">Abort</string>
+    <string name="str_limpiar">Clear</string>
+    <string name="str_copiar">Copy</string>
+    <string name="str_enviar">Run</string>
+    <string name="str_close">Close</string>
+    <string name="str_hint_comando">e.g. mithril -A ./rootfs/ | mithril --secrets | ls</string>
+    <string name="str_working_dir_label">Workspace: %1$s</string>
+    <string name="str_logs_copied">Logs copied to clipboard.</string>
+    <string name="str_no_logs_to_copy">No logs to copy.</string>
+    <string name="str_export_success">%1$d file(s) exported to Downloads/%2$s</string>
+    <string name="str_export_none">No files found to export in current workspace.</string>
+    <string name="str_file_imported">File imported successfully: %1$s (%2$s)</string>
+    <string name="str_file_import_error">Error importing file: %1$s</string>
+    <string name="str_status_ready">Ready</string>
+    <string name="str_status_running">Executing: %1$s</string>
+    
+    <!-- UI Buttons & Controls for Mithril -->
+    <string name="btn_select_target">Select File / Folder</string>
+    <string name="btn_scan_all">Scan Everything (-A)</string>
+    <string name="btn_secrets">Secrets &amp; Keys</string>
+    <string name="btn_sbom">SBOM Inventory</string>
+    <string name="btn_cve">Vulnerabilities (CVE)</string>
+    <string name="btn_licenses">Licenses Scan</string>
+    <string name="btn_dump_kconfig">Kernel Config</string>
+    <string name="btn_fetch_db">Update CVE DB</string>
+    <string name="cb_json">JSON (-j)</string>
+    <string name="target_none">Target: No target selected (Tap to select)</string>
+    <string name="target_selected">Target: %1$s (%2$s)</string>
+    <string name="select_target_prompt">Please select a file or directory to scan first.</string>
+
+    <string name="str_about_html"><![CDATA[<h2>Mithril Firmware Scanner</h2><p>Advanced Android application for forensic firmware analysis, header inspection, binary signature matching, and hardware security reverse engineering powered by native <b>mithril</b> and <b>libarchive</b>.</p><hr/><b>Project License:</b> Apache 2.0<br/><b>Author:</b> Daniel Elias Diamon Vazquez<br/><b>GitHub:</b> <a href="https://github.com/Danielk10/android-mithril-firmware-scanner">android-mithril-firmware-scanner</a><br/><br/><b>Third-Party Libraries and Components:</b><br/>• <a href="https://github.com/nmatt0/mithril">mithril</a> by nmatt0 (Apache 2.0 / BSD)<br/>• <a href="https://github.com/libarchive/libarchive">libarchive</a> (BSD 2-Clause)<br/>• <b>bsdunzip</b> (BSD 2-Clause)<br/>• Compression runtimes: lz4, lzma, zlib, zstd, openssl crypto, icu, xml2.<br/>]]></string>
+</resources>
