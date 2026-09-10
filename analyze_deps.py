@@ -4,10 +4,10 @@ import glob
 
 # Automatically find files to analyze
 libs_moria = glob.glob('android-moria-firmware-extractor/libs/*')
-libs_mithril = glob.glob('android-mithril-firmware-scanner/libs/*')
+libs_mithril = glob.glob('mithril-firmware-scanner/libs/*')
 binaries = [
     'android-moria-firmware-extractor/fake_root/data/data/com.diamon.moria/files/usr/bin/moria',
-    'android-mithril-firmware-scanner/fake_root/data/data/com.diamon.mithril/files/usr/bin/mithril'
+    'mithril-firmware-scanner/fake_root/data/data/com.diamon.mithril/files/usr/bin/mithril'
 ]
 
 files_to_analyze = binaries + libs_moria + libs_mithril
