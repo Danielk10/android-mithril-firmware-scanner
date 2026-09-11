@@ -87,4 +87,34 @@
     <string name="cve_db_log_success">\n[CVE DATABASE] Database successfully installed! (%1$s)\n[CVE DATABASE] Offline CVE scanning is now active with \'mithril --cve\'.\n\n</string>
     <string name="cve_db_log_error">\n[CVE DATABASE ERROR] %1$s\n\n</string>
     <string name="cve_db_log_cancelled">\n[CVE DATABASE] Download cancelled by user.\n\n</string>
+
+    <!-- Terminal Sandbox Commands Output -->
+    <string name="terminal_cd_workdir">Working directory: %1$s\n</string>
+    <string name="terminal_cd_not_dir">cd: directory does not exist: %1$s\n</string>
+    <string name="terminal_ls_cannot_access">ls: cannot access \'%1$s\': No such directory\n</string>
+    <string name="terminal_ls_empty">(empty directory)\n</string>
+    <string name="terminal_cat_usage">Usage: cat &lt;file&gt;\n</string>
+    <string name="terminal_cat_not_found">cat: %1$s: File not found\n</string>
+    <string name="terminal_cat_protected">cat: %1$s: Protected system file\n</string>
+    <string name="terminal_cat_too_large">cat: File is too large to display (&gt; 2 MB)\n</string>
+    <string name="terminal_cat_error">cat: Error reading file: %1$s\n</string>
+    <string name="terminal_touch_usage">Usage: touch &lt;file&gt;\n</string>
+    <string name="terminal_touch_created">Created: %1$s\n</string>
+    <string name="terminal_touch_error">touch: error: %1$s\n</string>
+    <string name="terminal_rm_usage">Usage: rm [-r|-rf] &lt;file or directory&gt;\n</string>
+    <string name="terminal_rm_not_found">rm: cannot remove \'%1$s\': No such file or directory\n</string>
+    <string name="terminal_rm_protected">rm: cannot remove \'%1$s\': Protected system file or directory\n</string>
+    <string name="terminal_rm_is_dir">rm: \'%1$s\' is a directory (use \'rm -r\' or \'rm -rf\')\n</string>
+    <string name="terminal_rm_deleted">Deleted: %1$s\n</string>
+    <string name="terminal_rm_failed">rm: could not remove %1$s\n</string>
+    <string name="terminal_mkdir_usage">Usage: mkdir [-p] &lt;directory&gt;\n</string>
+    <string name="terminal_mkdir_exists">mkdir: cannot create directory \'%1$s\': Directory exists\n</string>
+    <string name="terminal_mkdir_created">Directory created: %1$s\n</string>
+    <string name="terminal_mkdir_failed">mkdir: could not create %1$s\n</string>
+    <string name="terminal_cp_usage">Usage: cp [-r] &lt;source&gt; &lt;destination&gt;\n</string>
+    <string name="terminal_cp_not_found">cp: source does not exist: %1$s\n</string>
+    <string name="terminal_cp_omitting_dir">cp: omitting directory \'%1$s\' (use \'cp -r\')\n</string>
+    <string name="terminal_cp_copied">Copied: %1$s -&gt; %2$s\n</string>
+    <string name="terminal_cp_error">cp: error copying %1$s\n</string>
+    <string name="terminal_unrecognized_cmd">Unrecognized command: %1$s\nType \'help\' or \'?\' to see available commands.\n</string>
 </resources>

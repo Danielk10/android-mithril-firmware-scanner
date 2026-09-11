@@ -20,7 +20,7 @@ Aplicación Android de alto rendimiento para **análisis estático de seguridad,
 > **Versión actual:** `1.0.0` (Código de versión: `1`)  
 > **Rango de soporte Android:** API 23 a API 37 (Android 6.0 a Android 17+)  
 > **Arquitectura objetivo:** `arm64-v8a` (con alineación de página a 16 KB para Android 15+)  
-> **Autor:** [Danielk10](https://github.com/Danielk10)
+> **Autor Android:** [Danielk10](https://github.com/Danielk10)
 
 ---
 
@@ -62,7 +62,7 @@ Aplicación Android de alto rendimiento para **análisis estático de seguridad,
 3. 🛡️ **Auditoría de Vulnerabilidades CVE (`--cve`)**:
    - Cruce del SBOM contra un espejo local de vulnerabilidades basado en OSV.dev, NVD 2.0, catálogo CISA KEV y métricas EPSS de FIRST.
    - Lista curada de verificación de CVEs de kernel con filtrado estricto por versión y kconfig.
-   - Funciona de forma **100% fuera de línea (offline)** tras sincronizar el espejo con `mithril --fetch-db`.
+   - Funciona de forma **100% fuera de línea (offline)** tras sincronizar el espejo con `mithril --fetch-db` o desde el botón integrado en la app.
 4. 📜 **Identificación de Licencias Open-Source (`--licenses`, `--license-paths`)**:
    - Detección precisa de licencias SPDX a partir de etiquetas `SPDX-License-Identifier` y textos de licencias (`LICENSE`, `COPYING`, `NOTICE`).
 5. 🐧 **Extracción de Configuración del Kernel (`--dump-kconfig`)**:
@@ -87,7 +87,7 @@ Mithril opera directamente sobre archivos individuales o árboles de directorios
 | **Modo JSON** | `mithril -j <target>` | No (salida en pantalla) | Devuelve el reporte forense completo en formato JSON estructurado. |
 
 > [!TIP]
-> Si deseas volcar los reportes directamente a archivos en disco, puedes usar la terminal integrada ejecutando:
+> Si deseas volcar los reportes directamente a archivos en disco, puedes usar la terminal integrada ejecutando:  
 > `mithril --sbom -C out/ ./rootfs/`  
 > Esto generará automáticamente `out/sbom.cdx.json`, `out/sbom.spdx.json` y `out/mithril-report.json`.
 
@@ -166,8 +166,8 @@ Para compilar la versión de depuración:
 ./gradlew assembleDebug
 ```
 
-El APK resultante se genera en:
-`build/outputs/apk/debug/MithrilFirmwareScanner-v1.0.0-debug.apk`
+El APK resultante se genera en:  
+`/tmp/mithril/outputs/apk/debug/MithrilFirmwareScanner-v1.0.0-debug.apk`
 
 ---
 
@@ -178,8 +178,8 @@ El APK resultante se genera en:
   Repositorio oficial: [https://github.com/nmatt0/mithril](https://github.com/nmatt0/mithril) &bull; **Licencia MIT**
 
 ### 📱 Desarrollador de la Versión y Adaptación para Android
-- **Danielk10** — [GitHub: @Danielk10](https://github.com/Danielk10) — [danielpdiamon@gmail.com](mailto:danielpdiamon@gmail.com)  
-  *Desarrollo de la interfaz táctil, terminal sandbox UNIX, integración JNI y empaquetado móvil.*
+- **Danielk10** — [GitHub: @Danielk10](https://github.com/Danielk10)  
+  *Desarrollo de la interfaz táctil, terminal sandbox UNIX, gestor de base de datos CVE, integración JNI y empaquetado móvil.*
 
 ### 📄 Licencia del Proyecto Android
 Este proyecto y sus adaptaciones para Android están licenciados bajo la **Licencia Apache 2.0**. Consulta el archivo [LICENSE](LICENSE) para más información.
@@ -188,7 +188,7 @@ Este proyecto y sus adaptaciones para Android están licenciados bajo la **Licen
 
 | Componente | Autor / Origen | Licencia |
 | :--- | :--- | :--- |
-| **Mithril CLI** | [Matt Brown (nmatt0)](https://github.com/nmatt0/mithril) | [Licencia MIT](https://github.com/nmatt0/mithril/blob/main/LICENSE) |
+| **Mithril CLI** | [Matt Brown (nmatt0)](https://github.com/nmatt0) | [Licencia MIT](https://github.com/nmatt0/mithril/blob/main/LICENSE) |
 | **libarchive** | [libarchive contributors](https://github.com/libarchive/libarchive) | Licencia BSD 2-Cláusulas |
 | **bsdunzip** | libarchive / FreeBSD | Licencia BSD 2-Cláusulas |
 | **OpenSSL / libcrypto** | OpenSSL Project | Apache License 2.0 |
