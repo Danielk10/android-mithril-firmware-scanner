@@ -2,8 +2,8 @@
 build/
 
 # Código fuente descargado
-libarchive_mithril/
-mithril/
+/libarchive_mithril/
+/mithril/
 
 # Objetos y binarios
 *.o
