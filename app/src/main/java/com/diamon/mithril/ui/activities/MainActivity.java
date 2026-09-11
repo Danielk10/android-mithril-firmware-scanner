@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.diamon.mithril.R;
 import com.diamon.mithril.core.TerminalExecutor;
@@ -36,6 +39,7 @@ import com.diamon.mithril.utils.FileManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TerminalExecutor.Callback {
@@ -77,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
     private ImageButton btnDelete;
     private ImageButton btnPaste;
     private ImageButton btnCopy;
-    private ImageButton btnClear;
     private ImageButton btnAbort;
     private LogScrollView scrollLog;
 
@@ -163,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
         btnDelete = findViewById(R.id.btnDelete);
         btnPaste = findViewById(R.id.btnPaste);
         btnCopy = findViewById(R.id.btnCopy);
-        btnClear = findViewById(R.id.btnClear);
         btnAbort = findViewById(R.id.btnAbort);
         scrollLog = findViewById(R.id.scrollLog);
     }
@@ -253,10 +255,9 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
         btnArrowLeft.setOnClickListener(v -> moveCursor(-1));
         btnArrowRight.setOnClickListener(v -> moveCursor(1));
         btnTab.setOnClickListener(v -> performTab());
-        btnDelete.setOnClickListener(v -> performDelete());
+        btnDelete.setOnClickListener(v -> onClearRequested());
         btnPaste.setOnClickListener(v -> pasteFromClipboard());
         btnCopy.setOnClickListener(v -> copyLogsToClipboard());
-        btnClear.setOnClickListener(v -> onClearRequested());
         btnAbort.setOnClickListener(v -> terminalExecutor.abort());
     }
 
@@ -295,14 +296,6 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
         etCommand.getText().insert(sel, "    ");
     }
 
-    private void performDelete() {
-        if (etCommand == null) return;
-        int sel = etCommand.getSelectionStart();
-        if (sel > 0) {
-            etCommand.getText().delete(sel - 1, sel);
-        }
-    }
-
     private void pasteFromClipboard() {
         if (etCommand == null) return;
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -323,8 +316,14 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
         List<File> targetFiles = new ArrayList<>();
 
         if (files != null) {
+            Arrays.sort(files, (a, b) -> {
+                if (a.isDirectory() != b.isDirectory()) {
+                    return a.isDirectory() ? -1 : 1;
+                }
+                return a.getName().compareToIgnoreCase(b.getName());
+            });
             for (File f : files) {
-                if (f.getName().startsWith(".")) continue;
+                if (FileManager.shouldIgnore(f)) continue;
                 String label = f.isDirectory() ? getString(R.string.log_dir_tag, f.getName()) : f.getName();
                 displayNames.add(label);
                 targetFiles.add(f);
@@ -486,10 +485,14 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
     }
 
     private void showAboutAndLicensesDialog() {
+        ScrollView scrollView = new ScrollView(this);
         TextView dialogText = new TextView(this);
         int padding = (int) (18 * getResources().getDisplayMetrics().density);
-        dialogText.setPadding(padding, padding, padding, padding / 2);
+        dialogText.setPadding(padding, padding, padding, padding);
         dialogText.setMovementMethod(LinkMovementMethod.getInstance());
+        dialogText.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+        dialogText.setLinkTextColor(ContextCompat.getColor(this, R.color.secondary));
+        dialogText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
         String html = getString(R.string.str_about_licenses_html);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -499,10 +502,11 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
             CharSequence text = Html.fromHtml(html);
             dialogText.setText(text);
         }
+        scrollView.addView(dialogText);
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.about_licenses_dialog_title)
-                .setView(dialogText)
+                .setView(scrollView)
                 .setPositiveButton(R.string.str_close, null)
                 .show();
     }

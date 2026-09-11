@@ -8,7 +8,7 @@
     <string name="menu_about_licenses">Acerca de y Licencias</string>
     <string name="str_enviar">Ejecutar</string>
     <string name="str_close">Cerrar</string>
-    <string name="str_hint_comando">Ej: mithril -A ./rootfs/ | mithril --secrets | ls</string>
+    <string name="str_hint_comando">mithril [opciones] &lt;objetivo&gt;</string>
     <string name="str_logs_copied">Registros copiados al portapapeles.</string>
     <string name="str_no_logs_to_copy">No hay registros para copiar.</string>
     <string name="str_export_success">%1$d archivo(s) exportados a Descargas/%2$s</string>
@@ -36,14 +36,14 @@
 
     <!-- UI Buttons & Controls for Mithril -->
     <string name="btn_select_target">Seleccionar Objetivo</string>
-    <string name="btn_scan_all">Escanear Todo (-A)</string>
-    <string name="btn_secrets">Buscar Secretos</string>
-    <string name="btn_sbom">Inventario SBOM</string>
-    <string name="btn_cve">Vulnerabilidades (CVE)</string>
-    <string name="btn_licenses">Auditar Licencias SW</string>
-    <string name="btn_dump_kconfig">Kernel Config</string>
-    <string name="btn_fetch_db">Descargar DB CVE</string>
-    <string name="btn_update_db">Reconstruir DB CVE</string>
+    <string name="btn_scan_all">Escanear (-A)</string>
+    <string name="btn_secrets">Secretos</string>
+    <string name="btn_sbom">SBOM</string>
+    <string name="btn_cve">CVE</string>
+    <string name="btn_licenses">Licencias</string>
+    <string name="btn_dump_kconfig">Kernel .cfg</string>
+    <string name="btn_fetch_db">Descargar DB</string>
+    <string name="btn_update_db">Actualizar DB</string>
     <string name="cb_json">Salida JSON (-j)</string>
     <string name="target_none">Objetivo: Ningún archivo seleccionado (Toca para seleccionar)</string>
     <string name="target_selected">Objetivo: %1$s (%2$s)</string>

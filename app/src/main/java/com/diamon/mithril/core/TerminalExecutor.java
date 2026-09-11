@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +88,11 @@ public class TerminalExecutor {
     private void runCommand(String commandLine) {
         postStarted(commandLine);
 
+        if (commandLine.contains("|") || commandLine.contains(">") || commandLine.contains("<") || commandLine.contains(";") || commandLine.contains("&&")) {
+            executeInShell(commandLine);
+            return;
+        }
+
         String[] tokens = splitCommandLine(commandLine);
         if (tokens.length == 0) {
             postFinished(0);
@@ -109,8 +115,7 @@ public class TerminalExecutor {
 
             case "help":
             case "?":
-                printHelp();
-                postFinished(0);
+                executeNativeBinary(new String[]{"mithril", "--help"});
                 return;
 
             case "pwd":
@@ -541,10 +546,11 @@ public class TerminalExecutor {
 
             currentProcess = pb.start();
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(currentProcess.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    postOutput(line + "\n");
+            try (InputStream is = currentProcess.getInputStream()) {
+                byte[] buffer = new byte[2048];
+                int n;
+                while ((n = is.read(buffer)) != -1) {
+                    postOutput(new String(buffer, 0, n, StandardCharsets.UTF_8));
                 }
             }
 
@@ -558,47 +564,41 @@ public class TerminalExecutor {
         }
     }
 
-    private void printHelp() {
-        String help = "======================================================\n"
-                + "  Mithril Firmware Scanner - Terminal Interactiva\n"
-                + "======================================================\n\n"
-                + "USO DE MITHRIL:\n"
-                + "  mithril [opciones] <archivo|directorio>\n\n"
-                + "OPCIONES DE MITHRIL:\n"
-                + "  -j, --json          Salida JSON (por defecto: legible para humanos)\n"
-                + "      --secrets       Escanear contenido de archivos en busca de credenciales/claves\n"
-                + "      --sbom          Inventario de componentes de software y versiones\n"
-                + "      --cve           Comparar componentes contra vulnerabilidades conocidas\n"
-                + "      --licenses      Identificar licencias de código abierto\n"
-                + "  -A, --all           Ejecutar todos los pases (por defecto si no se selecciona ninguno)\n"
-                + "      --rules <FILE>  Añadir reglas definidas por el usuario desde un archivo JSON\n"
-                + "      --fetch-db      Descargar mirror precompilado de CVEs y salir\n"
-                + "      --update-db     Reconstruir mirror local de CVEs desde el código fuente y salir\n"
-                + "  -C, --outdir <DIR>  Escribir el informe JSON en DIR/mithril-report.json\n"
-                + "      --dump-kconfig  Imprimir el .config recuperado del kernel en stdout y salir\n"
-                + "      --threads <N>   Hilos de trabajo para escaneo de árboles (por defecto: auto)\n"
-                + "  -h, --help          Mostrar ayuda de mithril\n"
-                + "      --version       Mostrar versión de mithril\n\n"
-                + "EJEMPLOS:\n"
-                + "  mithril ./rootfs/            Ejecutar todos los análisis en un árbol descomprimido\n"
-                + "  mithril --secrets ./rootfs/  Solo el pase de detección de secretos\n"
-                + "  mithril -j ./rootfs/         Salida JSON para herramientas / LLMs\n\n"
-                + "FLUJO / PIPELINE:\n"
-                + "  moria -e firmware.bin  ->  mithril firmware.bin.extracted/\n\n"
-                + "COMANDOS SHELL INTEGRADOS:\n"
-                + "  ls [-a] [dir]           Listar archivos y propiedades\n"
-                + "  pwd                     Mostrar directorio de trabajo actual\n"
-                + "  cd <dir>                Cambiar de carpeta (o 'cd ~' para home)\n"
-                + "  cat <archivo>           Ver contenido de archivo de texto\n"
-                + "  touch <archivo>         Crear archivo vacío o actualizar timestamp\n"
-                + "  mkdir [-p] <dir>        Crear carpeta de trabajo\n"
-                + "  rm [-r|-rf] <archivo>   Eliminar archivo o directorio recursivamente\n"
-                + "  cp [-r] <origen> <dst>  Copiar archivo o directorio recursivamente\n"
-                + "  echo <texto>            Imprimir texto en consola\n"
-                + "  clear                   Limpiar la pantalla de la terminal\n"
-                + "  help / ?                Mostrar este menú de ayuda\n"
-                + "======================================================\n";
-        postOutput(help);
+    private void executeInShell(String commandLine) {
+        File filesDir = context.getFilesDir();
+        File usrBin = new File(filesDir, "usr/bin");
+        File nativeLibDir = new File(context.getApplicationInfo().nativeLibraryDir);
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("/system/bin/sh", "-c", commandLine);
+            pb.directory(currentWorkDir);
+
+            Map<String, String> env = pb.environment();
+            String ldPath = nativeLibDir.getAbsolutePath() + ":" + new File(filesDir, "usr/lib").getAbsolutePath();
+            env.put("LD_LIBRARY_PATH", ldPath);
+            env.put("PATH", usrBin.getAbsolutePath() + ":" + nativeLibDir.getAbsolutePath() + ":" + System.getenv("PATH"));
+            env.put("HOME", filesDir.getAbsolutePath());
+
+            pb.redirectErrorStream(true);
+
+            currentProcess = pb.start();
+
+            try (InputStream is = currentProcess.getInputStream()) {
+                byte[] buffer = new byte[2048];
+                int n;
+                while ((n = is.read(buffer)) != -1) {
+                    postOutput(new String(buffer, 0, n, StandardCharsets.UTF_8));
+                }
+            }
+
+            int exitCode = currentProcess.waitFor();
+            currentProcess = null;
+            postFinished(exitCode);
+
+        } catch (Exception e) {
+            postOutput(context.getString(R.string.log_execution_error, e.getMessage()));
+            postFinished(1);
+        }
     }
 
     private File resolveFile(String path) {
