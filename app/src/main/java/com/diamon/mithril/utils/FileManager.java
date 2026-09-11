@@ -95,7 +95,8 @@ public class FileManager {
                lower.equals("runtimes") || 
                lower.equals("dexopt") || 
                lower.equals("no_backup") || 
-               lower.equals("tmp");
+               lower.equals("tmp") ||
+               lower.equals("mithril_db");
     }
 
     public static boolean exportFileToDownloads(Context context, File sourceFile, String subFolder) {
