@@ -4,13 +4,9 @@
     <string name="menu_set_working_dir">Select Working Directory</string>
     <string name="menu_import_file">Import File to Workspace</string>
     <string name="menu_export_downloads">Export Files to Downloads</string>
-    <string name="menu_copy_logs">Copy Logs to Clipboard</string>
-    <string name="menu_clear_terminal">Clear Terminal</string>
-    <string name="menu_licenses">Open Source Licenses</string>
     <string name="menu_policy">Privacy Policy</string>
-    <string name="menu_about">About</string>
+    <string name="menu_about_licenses">About &amp; Licenses</string>
     <string name="str_polticas_de_pri">Privacy Policy</string>
-    <string name="str_acerca_de">About Mithril</string>
     <string name="str_terminal_salida">Terminal Console</string>
     <string name="str_detener">Abort</string>
     <string name="str_limpiar">Clear</string>
@@ -47,12 +43,12 @@
     <string name="terminal_cd_abort">Abort running process</string>
     
     <!-- UI Buttons & Controls for Mithril -->
-    <string name="btn_select_target">Select File / Folder</string>
+    <string name="btn_select_target">Select Target</string>
     <string name="btn_scan_all">Scan Everything (-A)</string>
     <string name="btn_secrets">Secrets &amp; Keys</string>
     <string name="btn_sbom">SBOM Inventory</string>
     <string name="btn_cve">Vulnerabilities (CVE)</string>
-    <string name="btn_licenses">Licenses Scan</string>
+    <string name="btn_licenses">Audit SW Licenses</string>
     <string name="btn_dump_kconfig">Kernel Config</string>
     <string name="btn_fetch_db">Download CVE DB</string>
     <string name="btn_update_db">Rebuild CVE DB</string>
@@ -60,10 +56,10 @@
     <string name="target_none">Target: No target selected (Tap to select)</string>
     <string name="target_selected">Target: %1$s (%2$s)</string>
     <string name="select_target_prompt">Please select a file or directory to scan first.</string>
+    <string name="dialog_select_target_title">Select Scan Target</string>
+    <string name="dialog_import_new_file">+ Import new file from storage...</string>
 
-    <!-- About & Licenses Dialogs -->
-    <string name="str_about_html"><![CDATA[<h2>Mithril Firmware Scanner</h2><p>Advanced application for software content analysis: secrets detection, SBOM generation, CVE vulnerability auditing, open-source license identification, and kernel extraction powered by native <b>mithril</b> and <b>libarchive</b>.</p><p><b>Pipeline Workflow:</b><br/><code>moria -e firmware.bin &rarr; mithril firmware.bin.extracted/</code></p><hr/><b>Project License:</b> Apache 2.0<br/><b>Author:</b> Daniel Elias Diamon Vazquez<br/><b>GitHub:</b> <a href="https://github.com/Danielk10/mithril-firmware-scanner">mithril-firmware-scanner</a><br/><br/><b>Documentation:</b> README.md, docs/<br/>]]></string>
-
-    <string name="licenses_dialog_title">Open Source Licenses</string>
-    <string name="licenses_dialog_message"><![CDATA[<h3>Mithril Firmware Scanner - Open Source Licenses</h3><p>This software integrates native open-source binaries and shared libraries:</p><ul><li><b>Mithril</b> &mdash; Apache License 2.0 / BSD (<a href="https://github.com/nmatt0/mithril">nmatt0/mithril</a>)</li><li><b>libarchive</b> &mdash; BSD 2-Clause License (<a href="https://github.com/libarchive/libarchive">libarchive.org</a>)</li><li><b>bsdunzip</b> &mdash; BSD 2-Clause License</li><li><b>ICU (International Components for Unicode)</b> &mdash; Unicode / ICU License (<a href="https://icu.unicode.org">icu.unicode.org</a>)</li><li><b>OpenSSL / libcrypto</b> &mdash; Apache License 2.0 (<a href="https://www.openssl.org">openssl.org</a>)</li><li><b>Zstandard (libzstd)</b> &mdash; BSD 3-Clause License (<a href="https://facebook.github.io/zstd/">facebook/zstd</a>)</li><li><b>LZ4 (liblz4)</b> &mdash; BSD 2-Clause License (<a href="https://lz4.org">lz4.org</a>)</li><li><b>XZ / liblzma</b> &mdash; Public Domain / LGPL 2.1 (<a href="https://tukaani.org/xz/">tukaani.org/xz</a>)</li><li><b>zlib</b> &mdash; zlib License (<a href="https://zlib.net">zlib.net</a>)</li><li><b>libxml2</b> &mdash; MIT License (<a href="https://gitlab.gnome.org/GNOME/libxml2">xmlsoft.org</a>)</li><li><b>libiconv &amp; libcharset</b> &mdash; LGPL 2.1</li><li><b>libacl</b> &mdash; LGPL 2.1</li></ul>]]></string>
+    <!-- About & Licenses Unified Dialog -->
+    <string name="about_licenses_dialog_title">About &amp; Licenses</string>
+    <string name="str_about_licenses_html"><![CDATA[<h2>Mithril Firmware Scanner</h2><p>Advanced application for security auditing and software content analysis in firmware images and file systems: secrets detection, SBOM generation, CVE vulnerability auditing, software license identification, and Linux kernel .config extraction powered by native <b>mithril</b> and <b>libarchive</b>.</p><p><b>Pipeline Workflow:</b><br/><code>moria -e firmware.bin &rarr; mithril firmware.bin.extracted/</code></p><hr/><b>Android Application Author:</b><br/>Daniel Elias Diamon Vazquez<br/><br/><b>Original CLI Tool:</b><br/><b>mithril</b> created by <b>nmatt0</b> &mdash; Apache 2.0 / BSD License<br/><a href="https://github.com/nmatt0/mithril">https://github.com/nmatt0/mithril</a><br/><br/><b>Android Project License:</b> Apache License 2.0<br/><b>GitHub Repository:</b> <a href="https://github.com/Danielk10/android-mithril-firmware-scanner">Danielk10/android-mithril-firmware-scanner</a><br/><hr/><h3>Open Source Licenses</h3><p>This software integrates native open-source binaries and shared libraries:</p><ul><li><b>Mithril CLI</b> &mdash; Apache License 2.0 / BSD (<a href="https://github.com/nmatt0/mithril">nmatt0/mithril</a>)</li><li><b>libarchive</b> &mdash; BSD 2-Clause License (<a href="https://github.com/libarchive/libarchive">libarchive.org</a>)</li><li><b>bsdunzip</b> &mdash; BSD 2-Clause License</li><li><b>ICU (Unicode Components)</b> &mdash; Unicode / ICU License (<a href="https://icu.unicode.org">icu.unicode.org</a>)</li><li><b>OpenSSL / libcrypto</b> &mdash; Apache License 2.0 (<a href="https://www.openssl.org">openssl.org</a>)</li><li><b>Zstandard (libzstd)</b> &mdash; BSD 3-Clause License (<a href="https://facebook.github.io/zstd/">facebook/zstd</a>)</li><li><b>LZ4 (liblz4)</b> &mdash; BSD 2-Clause License (<a href="https://lz4.org">lz4.org</a>)</li><li><b>XZ / liblzma</b> &mdash; Public Domain / LGPL 2.1 (<a href="https://tukaani.org/xz/">tukaani.org/xz</a>)</li><li><b>zlib</b> &mdash; zlib License (<a href="https://zlib.net">zlib.net</a>)</li><li><b>libxml2</b> &mdash; MIT License (<a href="https://gitlab.gnome.org/GNOME/libxml2">xmlsoft.org</a>)</li><li><b>libiconv &amp; libcharset</b> &mdash; LGPL 2.1</li><li><b>libacl</b> &mdash; LGPL 2.1</li></ul>]]></string>
 </resources>
