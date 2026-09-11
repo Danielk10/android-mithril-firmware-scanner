@@ -18,6 +18,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_cve_db"
+        android:title="@string/menu_cve_db"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_policy"
         android:title="@string/menu_policy"
         app:showAsAction="never" />

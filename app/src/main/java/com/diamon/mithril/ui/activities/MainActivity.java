@@ -35,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.diamon.mithril.R;
+import com.diamon.mithril.core.CveDatabaseManager;
 import com.diamon.mithril.core.TerminalExecutor;
 import com.diamon.mithril.ui.views.LogScrollView;
 import com.diamon.mithril.utils.AssetHelper;
@@ -233,8 +234,8 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
         btnCve.setOnClickListener(v -> runMithrilAction("--cve"));
         btnLicenses.setOnClickListener(v -> runMithrilAction("--licenses"));
         btnDumpKconfig.setOnClickListener(v -> runMithrilAction("--dump-kconfig"));
-        btnFetchDb.setOnClickListener(v -> runMithrilAction("--fetch-db"));
-        btnUpdateDb.setOnClickListener(v -> runMithrilAction("--update-db"));
+        btnFetchDb.setOnClickListener(v -> promptCveDatabaseDownload());
+        btnUpdateDb.setOnClickListener(v -> promptCveDatabaseDownload());
 
         // Terminal y Comandos
         btnRun.setOnClickListener(v -> submitCommand());
@@ -367,10 +368,29 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
 
     private void runMithrilAction(String actionFlag) {
         if ("--fetch-db".equals(actionFlag) || "--update-db".equals(actionFlag)) {
-            submitCustomCommand("mithril " + actionFlag);
+            promptCveDatabaseDownload();
             return;
         }
 
+        if ("--cve".equals(actionFlag) && !CveDatabaseManager.isDatabaseInstalled(this)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.cve_db_dialog_title)
+                    .setMessage(R.string.cve_db_prompt_missing_msg)
+                    .setPositiveButton(R.string.cve_db_btn_download, (dialog, which) -> {
+                        promptCveDatabaseDownload();
+                    })
+                    .setNeutralButton(R.string.cve_db_btn_run_anyway, (dialog, which) -> {
+                        executeTargetScan(actionFlag);
+                    })
+                    .setNegativeButton(R.string.str_close, null)
+                    .show();
+            return;
+        }
+
+        executeTargetScan(actionFlag);
+    }
+
+    private void executeTargetScan(String actionFlag) {
         if (currentTargetFile == null || !currentTargetFile.exists() || FileManager.shouldIgnore(currentTargetFile)) {
             currentTargetFile = null;
             updateTargetDisplay();
@@ -391,6 +411,34 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
 
         String fullCommand = String.join(" ", cmdParts);
         submitCustomCommand(fullCommand);
+    }
+
+    private void promptCveDatabaseDownload() {
+        if (CveDatabaseManager.isDownloading()) {
+            Toast.makeText(this, R.string.cve_db_download_in_progress, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        boolean installed = CveDatabaseManager.isDatabaseInstalled(this);
+        String message;
+        String actionBtnText;
+        if (installed) {
+            String sizeStr = CveDatabaseManager.formatSize(CveDatabaseManager.getDatabaseTotalSize(this));
+            message = getString(R.string.cve_db_dialog_installed_msg, sizeStr);
+            actionBtnText = getString(R.string.cve_db_btn_update);
+        } else {
+            message = getString(R.string.cve_db_dialog_not_installed_msg);
+            actionBtnText = getString(R.string.cve_db_btn_download);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.cve_db_dialog_title)
+                .setMessage(message)
+                .setPositiveButton(actionBtnText, (dialog, which) -> {
+                    submitCustomCommand("mithril --fetch-db");
+                })
+                .setNegativeButton(R.string.str_close, null)
+                .show();
     }
 
     private void submitCommand() {
@@ -485,6 +533,9 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
         } else if (id == R.id.action_export_downloads) {
             exportAllFilesToDownloads();
             return true;
+        } else if (id == R.id.action_cve_db) {
+            promptCveDatabaseDownload();
+            return true;
         } else if (id == R.id.action_policy) {
             startActivity(new Intent(this, PolicyActivity.class));
             return true;
@@ -561,5 +612,13 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
     @Override
     public void onClearRequested() {
         tvLog.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (terminalExecutor != null) {
+            terminalExecutor.destroy();
+        }
     }
 }

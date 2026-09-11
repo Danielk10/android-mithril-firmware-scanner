@@ -3,6 +3,7 @@ package com.diamon.mithril.core;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -44,6 +45,7 @@ public class TerminalExecutor {
 
     private File currentWorkDir;
     private volatile Process currentProcess;
+    private PowerManager.WakeLock wakeLock;
 
     public TerminalExecutor(Context context, Callback callback) {
         this.context = context;
@@ -63,10 +65,36 @@ public class TerminalExecutor {
 
     public synchronized boolean isRunning() {
         Process p = currentProcess;
-        return p != null && p.isAlive();
+        return (p != null && p.isAlive()) || CveDatabaseManager.isDownloading();
+    }
+
+    private synchronized void acquireWakeLock() {
+        if (wakeLock == null) {
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            if (pm != null) {
+                wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, context.getPackageName() + ":ExecutionWakeLock");
+                wakeLock.setReferenceCounted(false);
+            }
+        }
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire(30 * 60 * 1000L); // 30 min safety timeout
+        }
+    }
+
+    private synchronized void releaseWakeLock() {
+        if (wakeLock != null && wakeLock.isHeld()) {
+            try {
+                wakeLock.release();
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     public synchronized void abort() {
+        releaseWakeLock();
+        if (CveDatabaseManager.isDownloading()) {
+            CveDatabaseManager.cancelDownload();
+        }
         Process p = currentProcess;
         if (p != null) {
             try {
@@ -79,6 +107,11 @@ public class TerminalExecutor {
         }
     }
 
+    public synchronized void destroy() {
+        abort();
+        releaseWakeLock();
+    }
+
     public void execute(String commandLine) {
         if (commandLine == null || commandLine.trim().isEmpty()) return;
         final String cmd = commandLine.trim();
@@ -88,6 +121,13 @@ public class TerminalExecutor {
 
     private void runCommand(String commandLine) {
         postStarted(commandLine);
+
+        String trimmed = commandLine.trim();
+        if (trimmed.startsWith("mithril --fetch-db") || trimmed.startsWith("mithril --update-db") ||
+            trimmed.startsWith("./usr/bin/mithril --fetch-db") || trimmed.startsWith("./usr/bin/mithril --update-db")) {
+            executeCveDatabaseDownload();
+            return;
+        }
 
         if (commandLine.contains("|") || commandLine.contains(">") || commandLine.contains("<") || commandLine.contains(";") || commandLine.contains("&&")) {
             executeInShell(commandLine);
@@ -518,6 +558,12 @@ public class TerminalExecutor {
 
     private void executeNativeBinary(String[] tokens) {
         String binaryName = tokens[0];
+        if (("mithril".equals(binaryName) || binaryName.endsWith("/mithril")) &&
+                tokens.length > 1 && ("--fetch-db".equals(tokens[1]) || "--update-db".equals(tokens[1]))) {
+            executeCveDatabaseDownload();
+            return;
+        }
+
         File filesDir = context.getFilesDir();
         File usrBin = new File(filesDir, "usr/bin");
         File nativeLibDir = new File(context.getApplicationInfo().nativeLibraryDir);
@@ -628,6 +674,24 @@ public class TerminalExecutor {
         }
     }
 
+    private void executeCveDatabaseDownload() {
+        CveDatabaseManager.startDownload(context, new CveDatabaseManager.DownloadCallback() {
+            @Override
+            public void onLog(String line) {
+                postOutput(line);
+            }
+
+            @Override
+            public void onProgress(int progressPercent, String status) {
+            }
+
+            @Override
+            public void onFinished(boolean success, String message) {
+                postFinished(success ? 0 : 1);
+            }
+        });
+    }
+
     private void printSandboxHelp() {
         boolean isEs = Locale.getDefault().getLanguage().startsWith("es");
         if (isEs) {
@@ -658,6 +722,7 @@ public class TerminalExecutor {
                     + "  mithril --secrets ./rootfs/  Detección de claves y secretos\n"
                     + "  mithril --sbom ./rootfs/     Inventario SBOM de paquetes\n"
                     + "  mithril --cve ./rootfs/      Auditoría de vulnerabilidades\n"
+                    + "  mithril --fetch-db           Descargar/actualizar base de datos CVE\n"
                     + "  mithril --licenses ./rootfs/ Auditar licencias open-source\n"
                     + "  mithril --dump-kconfig kern  Extraer .config del kernel\n"
                     + "  mithril -j ./rootfs/         Salida forense en formato JSON\n\n"
@@ -692,6 +757,7 @@ public class TerminalExecutor {
                     + "  mithril --secrets ./rootfs/  Detect keys and secrets\n"
                     + "  mithril --sbom ./rootfs/     Generate SBOM inventory\n"
                     + "  mithril --cve ./rootfs/      Audit component CVEs\n"
+                    + "  mithril --fetch-db           Download/update official CVE database\n"
                     + "  mithril --licenses ./rootfs/ Audit open-source licenses\n"
                     + "  mithril --dump-kconfig kern  Recover kernel .config\n"
                     + "  mithril -j ./rootfs/         Forensic output in JSON\n\n"
@@ -743,10 +809,12 @@ public class TerminalExecutor {
     }
 
     private void postStarted(String command) {
+        acquireWakeLock();
         mainHandler.post(() -> callback.onCommandStarted(command));
     }
 
     private void postFinished(int exitCode) {
+        releaseWakeLock();
         mainHandler.post(() -> callback.onCommandFinished(exitCode));
     }
 }

@@ -68,4 +68,23 @@
     <string name="log_dir_tag">[DIR] %1$s</string>
     <string name="log_process_aborted">\n[PROCESS ABORTED BY USER]\n</string>
     <string name="log_execution_error">\n[EXECUTION ERROR]: %1$s\n</string>
+
+    <!-- CVE Database Manager Strings -->
+    <string name="menu_cve_db">Download / Update CVE Database</string>
+    <string name="cve_db_dialog_title">CVE Vulnerability Database</string>
+    <string name="cve_db_dialog_installed_msg">The CVE vulnerability database is currently installed (Total size: %1$s).\n\nDo you want to re-download the latest database update from the official repository?</string>
+    <string name="cve_db_dialog_not_installed_msg">The CVE vulnerability database is required for offline vulnerability scanning with \'mithril --cve\'.\n\nEstimated download size: ~38 MB (approx. 151 MB uncompressed).\n\nDo you want to download and install it now?</string>
+    <string name="cve_db_prompt_missing_msg">The CVE database is not installed yet. Would you like to download it now to enable vulnerability scanning?</string>
+    <string name="cve_db_btn_download">Download</string>
+    <string name="cve_db_btn_update">Update</string>
+    <string name="cve_db_btn_run_anyway">Run Anyway</string>
+    <string name="cve_db_download_in_progress">A CVE database download is already in progress.</string>
+    <string name="cve_db_log_start">\n[CVE DATABASE] Connecting to %1$s ...\n</string>
+    <string name="cve_db_log_manifest">[CVE DATABASE] Fetching SHA256SUMS manifest ...\n</string>
+    <string name="cve_db_log_downloading">[CVE DATABASE] Downloading %1$s (%2$s) ...\n</string>
+    <string name="cve_db_log_verifying">[CVE DATABASE] Verifying SHA256 checksum for %1$s ... OK\n</string>
+    <string name="cve_db_log_decompressing">[CVE DATABASE] Inflating %1$s ... OK\n</string>
+    <string name="cve_db_log_success">\n[CVE DATABASE] Database successfully installed! (%1$s)\n[CVE DATABASE] Offline CVE scanning is now active with \'mithril --cve\'.\n\n</string>
+    <string name="cve_db_log_error">\n[CVE DATABASE ERROR] %1$s\n\n</string>
+    <string name="cve_db_log_cancelled">\n[CVE DATABASE] Download cancelled by user.\n\n</string>
 </resources>

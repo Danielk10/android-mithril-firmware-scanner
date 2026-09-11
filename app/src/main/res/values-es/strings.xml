@@ -68,4 +68,23 @@
     <string name="log_dir_tag">[DIR] %1$s</string>
     <string name="log_process_aborted">\n[PROCESO ABORTADO POR EL USUARIO]\n</string>
     <string name="log_execution_error">\n[ERROR DE EJECUCIÓN]: %1$s\n</string>
+
+    <!-- CVE Database Manager Strings -->
+    <string name="menu_cve_db">Descargar / Actualizar Base de Datos CVE</string>
+    <string name="cve_db_dialog_title">Base de Datos de Vulnerabilidades CVE</string>
+    <string name="cve_db_dialog_installed_msg">La base de datos de vulnerabilidades CVE está instalada actualmente (Tamaño total: %1$s).\n\n¿Desea volver a descargar la actualización más reciente desde el repositorio oficial?</string>
+    <string name="cve_db_dialog_not_installed_msg">La base de datos de vulnerabilidades se requiere para el escaneo offline de vulnerabilidades con \'mithril --cve\'.\n\nTamaño estimado de descarga: ~38 MB (aprox. 151 MB descomprimida).\n\n¿Desea descargarla e instalarla ahora?</string>
+    <string name="cve_db_prompt_missing_msg">La base de datos CVE aún no está instalada. ¿Desea descargarla ahora para habilitar el escaneo de vulnerabilidades?</string>
+    <string name="cve_db_btn_download">Descargar</string>
+    <string name="cve_db_btn_update">Actualizar</string>
+    <string name="cve_db_btn_run_anyway">Ejecutar de todos modos</string>
+    <string name="cve_db_download_in_progress">Ya hay una descarga de la base de datos CVE en curso.</string>
+    <string name="cve_db_log_start">\n[BASE DE DATOS CVE] Conectando a %1$s ...\n</string>
+    <string name="cve_db_log_manifest">[BASE DE DATOS CVE] Obteniendo manifiesto SHA256SUMS ...\n</string>
+    <string name="cve_db_log_downloading">[BASE DE DATOS CVE] Descargando %1$s (%2$s) ...\n</string>
+    <string name="cve_db_log_verifying">[BASE DE DATOS CVE] Verificando suma SHA256 para %1$s ... Correcto\n</string>
+    <string name="cve_db_log_decompressing">[BASE DE DATOS CVE] Descomprimiendo %1$s ... Correcto\n</string>
+    <string name="cve_db_log_success">\n[BASE DE DATOS CVE] ¡Base de datos instalada exitosamente! (%1$s)\n[BASE DE DATOS CVE] El escaneo offline de CVEs ya está activo con \'mithril --cve\'.\n\n</string>
+    <string name="cve_db_log_error">\n[ERROR BASE DE DATOS CVE] %1$s\n\n</string>
+    <string name="cve_db_log_cancelled">\n[BASE DE DATOS CVE] Descarga cancelada por el usuario.\n\n</string>
 </resources>

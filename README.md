@@ -125,6 +125,18 @@ La aplicación combina botones táctiles ergonómicos de un toque con una consol
 - **Consola Sandbox UNIX**: Emulador con comandos nativos integrados (`ls`, `cd`, `pwd`, `cat`, `touch`, `mkdir`, `rm`, `cp`, `echo`, `clear`, `help`), soporte de pipes (`|`) y redirecciones (`>`).
 - **Barra de Herramientas Rápida**: Atajos para historial (anterior/siguiente), flechas de navegación de cursor, tabulación (4 espacios), portapapeles, limpieza y detención de procesos (`Abort`).
 - **Exportación Segura a Descargas**: Exportación recursiva de reportes y archivos a `Downloads/Mithril_Firmware/` mediante `MediaStore.Downloads` (compatible con Android 10 a Android 17 / API 29-37) respetando Scoped Storage.
+- **Gestor Nativo de Base de Datos CVE (CveDatabaseManager)**:
+  - Descarga HTTP nativa en Java sin depender de `curl` ni `unzip` del sistema Android.
+  - Verificación criptográfica SHA-256 en streaming contra el manifiesto oficial `SHA256SUMS`.
+  - Descompresión en streaming vía `GZIPInputStream` hacia `$MITHRIL_DB` (`files/mithril_db/`).
+  - Interfaz interactiva: Diálogos informativos de estado y tamaño de base de datos, advertencia preventiva si se escanea con `--cve` sin haberla descargado, y opción directa en el menú superior.
+  - Intercepción transparente en consola: Los comandos `mithril --fetch-db` y `mithril --update-db` son ejecutados directamente por el gestor nativo mostrando el progreso en tiempo real en la pantalla.
+- **Gestión de Energía y WakeLock en Segundo Plano**:
+  - `PowerManager.WakeLock` (`PARTIAL_WAKE_LOCK`) activo automáticamente durante escaneos intensivos o descargas de bases de datos para evitar que la CPU entre en suspensión cuando la pantalla se apague.
+  - Liberación inmediata al terminar (`postFinished`), abortar (`Abort`) o destruir la actividad (`onDestroy`), con temporizador de seguridad de 30 minutos.
+- **Matriz de Permisos Completa (API 23 a API 37)**:
+  - Compatibilidad total desde Android 6.0 hasta Android 17+.
+  - Inclusión de `WAKE_LOCK`, `INTERNET`, `ACCESS_NETWORK_STATE`, `READ_EXTERNAL_STORAGE` (maxSdkVersion=32), `WRITE_EXTERNAL_STORAGE` (maxSdkVersion=28), `POST_NOTIFICATIONS` y `requestLegacyExternalStorage="true"`.
 - **Soporte Bilingüe**: Idioma principal en Inglés y soporte completo en Español.
 
 ---
