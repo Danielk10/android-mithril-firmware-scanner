@@ -206,7 +206,14 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
 
     private void updateTargetDisplay() {
         if (currentTargetFile != null && currentTargetFile.exists() && !FileManager.shouldIgnore(currentTargetFile)) {
-            String sizeStr = currentTargetFile.length() < 1024 ? currentTargetFile.length() + " B" : (currentTargetFile.length() / 1024) + " KB";
+            String sizeStr;
+            if (currentTargetFile.isDirectory()) {
+                File[] sub = currentTargetFile.listFiles();
+                int count = sub != null ? sub.length : 0;
+                sizeStr = count + " items";
+            } else {
+                sizeStr = currentTargetFile.length() < 1024 ? currentTargetFile.length() + " B" : (currentTargetFile.length() / 1024) + " KB";
+            }
             tvTarget.setText(getString(R.string.target_selected, currentTargetFile.getName(), sizeStr));
         } else {
             currentTargetFile = null;
@@ -327,8 +334,8 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
                 return a.getName().compareToIgnoreCase(b.getName());
             });
             for (File f : files) {
-                if (FileManager.shouldIgnore(f) || f.isDirectory()) continue;
-                displayNames.add(f.getName());
+                if (FileManager.shouldIgnore(f)) continue;
+                displayNames.add(f.isDirectory() ? "[DIR] " + f.getName() : f.getName());
                 targetFiles.add(f);
             }
         }
@@ -364,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements TerminalExecutor.
             return;
         }
 
-        if (currentTargetFile == null || !currentTargetFile.exists() || FileManager.shouldIgnore(currentTargetFile) || currentTargetFile.isDirectory()) {
+        if (currentTargetFile == null || !currentTargetFile.exists() || FileManager.shouldIgnore(currentTargetFile)) {
             currentTargetFile = null;
             updateTargetDisplay();
             Toast.makeText(this, R.string.select_target_prompt, Toast.LENGTH_SHORT).show();
