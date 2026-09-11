@@ -159,11 +159,24 @@ El APK resultante se genera en:
 
 ---
 
-## 5) Proyectos Originales y Licencias
+## 5) Créditos, Autoría y Licencias
+
+### 🌟 Autor y Creador de la Herramienta Original C++ (Mithril)
+- **Matt Brown ([@nmatt0](https://github.com/nmatt0))** — Creador y autor principal de la suite nativa de seguridad y escaneo estático de firmware **Mithril**:  
+  Repositorio oficial: [https://github.com/nmatt0/mithril](https://github.com/nmatt0/mithril) &bull; **Licencia MIT**
+
+### 📱 Desarrollador de la Versión y Adaptación para Android
+- **Danielk10** — [GitHub: @Danielk10](https://github.com/Danielk10) — [danielpdiamon@gmail.com](mailto:danielpdiamon@gmail.com)  
+  *Desarrollo de la interfaz táctil, terminal sandbox UNIX, integración JNI y empaquetado móvil.*
+
+### 📄 Licencia del Proyecto Android
+Este proyecto y sus adaptaciones para Android están licenciados bajo la **Licencia Apache 2.0**. Consulta el archivo [LICENSE](LICENSE) para más información.
+
+### Proyectos Originales y Componentes de Terceros
 
 | Componente | Autor / Origen | Licencia |
 | :--- | :--- | :--- |
-| **Mithril CLI** | [nmatt0 (Matt Brown)](https://github.com/nmatt0/mithril) | [Licencia MIT](https://github.com/nmatt0/mithril/blob/main/LICENSE) |
+| **Mithril CLI** | [Matt Brown (nmatt0)](https://github.com/nmatt0/mithril) | [Licencia MIT](https://github.com/nmatt0/mithril/blob/main/LICENSE) |
 | **libarchive** | [libarchive contributors](https://github.com/libarchive/libarchive) | Licencia BSD 2-Cláusulas |
 | **bsdunzip** | libarchive / FreeBSD | Licencia BSD 2-Cláusulas |
 | **OpenSSL / libcrypto** | OpenSSL Project | Apache License 2.0 |
@@ -173,10 +186,3 @@ El APK resultante se genera en:
 | **zlib** | Jean-loup Gailly y Mark Adler | Licencia zlib |
 | **libxml2** | Daniel Veillard / GNOME | Licencia MIT |
 | **ICU** | Unicode Consortium | Licencia Unicode / ICU |
-
-### Licencia del Proyecto Android
-
-Este proyecto y sus adaptaciones para Android están licenciados bajo la **Licencia Apache 2.0**. Consulta el archivo [LICENSE](LICENSE) para más información.
-
-**Autor de la versión Android:** [Danielk10](https://github.com/Danielk10) (Daniel Elias Diamon Vazquez)  
-**Contacto:** [danielpdiamon@gmail.com](mailto:danielpdiamon@gmail.com)
