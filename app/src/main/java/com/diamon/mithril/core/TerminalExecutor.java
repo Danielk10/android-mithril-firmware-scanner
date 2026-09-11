@@ -115,7 +115,8 @@ public class TerminalExecutor {
 
             case "help":
             case "?":
-                executeNativeBinary(new String[]{"mithril", "--help"});
+                printSandboxHelp();
+                postFinished(0);
                 return;
 
             case "pwd":
@@ -599,6 +600,43 @@ public class TerminalExecutor {
             postOutput(context.getString(R.string.log_execution_error, e.getMessage()));
             postFinished(1);
         }
+    }
+
+    private void printSandboxHelp() {
+        String help = "======================================================\n"
+                + "  Terminal Sandbox - Comandos del Entorno\n"
+                + "======================================================\n\n"
+                + "COMANDOS INTEGRADOS DEL SANDBOX:\n"
+                + "  ls [-a] [dir]           Listar archivos y directorios\n"
+                + "  pwd                     Mostrar ruta del directorio actual\n"
+                + "  cd <dir>                Cambiar directorio ('cd ~' para inicio)\n"
+                + "  cat <archivo>           Ver contenido de un archivo de texto\n"
+                + "  touch <archivo>         Crear archivo vacío o actualizar fecha\n"
+                + "  mkdir [-p] <dir>        Crear un nuevo directorio\n"
+                + "  rm [-r|-rf] <objetivo>  Eliminar archivo o directorio\n"
+                + "  cp [-r] <origen> <dst>  Copiar archivo o directorio\n"
+                + "  echo <texto>            Imprimir texto en la terminal\n"
+                + "  clear / cls             Limpiar el historial de la pantalla\n"
+                + "  help / ?                Mostrar esta ayuda del sandbox\n\n"
+                + "======================================================\n"
+                + "  EJECUCIÓN DEL BINARIO NATIVO REAL (MITHRIL)\n"
+                + "======================================================\n"
+                + "Desde la caja de comandos inferior puede ejecutar directamente\n"
+                + "el binario nativo real con cualquier comando u opción:\n\n"
+                + "  mithril [opciones] <archivo|directorio>\n\n"
+                + "EJEMPLOS:\n"
+                + "  mithril ./rootfs/           Escanear árbol descomprimido\n"
+                + "  mithril -A ./rootfs/        Ejecutar todos los análisis\n"
+                + "  mithril --secrets ./rootfs/ Detección de claves y secretos\n"
+                + "  mithril --sbom ./rootfs/    Inventario SBOM de paquetes\n"
+                + "  mithril --cve ./rootfs/     Auditoría de vulnerabilidades\n"
+                + "  mithril --licenses ./rootfs/Auditar licencias open-source\n"
+                + "  mithril --dump-kconfig kern Extraer .config del kernel\n"
+                + "  mithril -j ./rootfs/        Salida forense en formato JSON\n\n"
+                + "Para ver la ayuda nativa completa del binario Mithril, ejecute:\n"
+                + "  mithril --help\n"
+                + "======================================================\n";
+        postOutput(help);
     }
 
     private File resolveFile(String path) {
